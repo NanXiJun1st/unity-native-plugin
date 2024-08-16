@@ -12,6 +12,7 @@ public class PluginInit : MonoBehaviour
     public Text init;
     public Text add;
     public Text man;
+    public Text appListText;
     void Start()
     {
         InitializePlugin("com.gdyang.unityplugin.PluginInstance");
@@ -59,5 +60,20 @@ public class PluginInit : MonoBehaviour
         }
     }
 
+    public void AppList()
+    {
+        appListText.text = Application.version + "app list:";
+        if (_pluginInstance != null)
+        {
+            //在 Java 中的 List（如 ArrayList）类型会作为 AndroidJavaObject 返回，需要在 Unity 中进行迭代处理
+            var installApps = _pluginInstance.Call<AndroidJavaObject>("getInstalledApps", unityActivity);
+            int size = installApps.Call<int>("size");
 
+            for (int i = 0; i < size; i++)
+            {
+                string item = installApps.Call<string>("get", i);
+                appListText.text += (item + ":");
+            }
+        }
+    }
 }
