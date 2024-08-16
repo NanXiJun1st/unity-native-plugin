@@ -13,6 +13,8 @@ public class PluginInit : MonoBehaviour
     public Text add;
     public Text man;
     public Text appListText;
+
+    private string appPackageName = "com.google.ar.core";
     void Start()
     {
         InitializePlugin("com.gdyang.unityplugin.PluginInstance");
@@ -74,6 +76,19 @@ public class PluginInit : MonoBehaviour
                 string item = installApps.Call<string>("get", i);
                 appListText.text += (item + ":");
             }
+        }
+    }
+
+    public void IsAppsInstalled()
+    {
+        bool isInstalled = _pluginInstance.CallStatic<bool>("isAppInstalled", unityActivity, appPackageName);
+        if (isInstalled)
+        {
+            appListText.text ="google ar core is installed";
+        }
+        else
+        {
+            appListText.text = "google ar core is not installed";
         }
     }
 }

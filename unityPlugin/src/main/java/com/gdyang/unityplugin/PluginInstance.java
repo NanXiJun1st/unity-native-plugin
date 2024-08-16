@@ -35,6 +35,7 @@ public class PluginInstance {
         Toast.makeText(unityActivity,msg,Toast.LENGTH_SHORT).show();
     }
 
+    ///获取设备已安装应用列表
     public List<String> getInstalledApps(Context context) {
         List<String> installedApps = new ArrayList<>();
         PackageManager packageManager = context.getPackageManager();
@@ -49,6 +50,19 @@ public class PluginInstance {
             }
         }
         return installedApps;
+    }
+
+    // 判断是否安装了指定包名的应用
+    public static boolean isAppInstalled(Context context, String packageName) {
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            // 尝试获取包信息，如果存在则返回true
+            PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
+            return packageInfo != null;
+        } catch (PackageManager.NameNotFoundException e) {
+            // 如果抛出异常，则说明未安装
+            return false;
+        }
     }
 
 }
